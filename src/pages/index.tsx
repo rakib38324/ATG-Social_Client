@@ -35,6 +35,7 @@ export default function Home() {
         {
           isLoading && <Loading />
         }
+        <p className="text-center my-5 p-2 bg-red-100 font-semibold">If you want to Edit and Delete Post you need to create a post. Because Only Post Author have access to EDIT and DELETE. Thank You.</p>
         <section>
           <AllPost posts={posts.data} refetch={refetch} singleRefetch={refetch}/>
         </section>

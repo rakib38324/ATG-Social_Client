@@ -18,6 +18,7 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
+
   const router = useRouter();
   const {
     register,
@@ -58,6 +59,7 @@ const ResetPassword = () => {
               setLoading(false);
               setError("");
               setMessage(`${res?.data}`)
+              router.push('/login')
             }
 
             if (res?.success === false) {
@@ -139,6 +141,10 @@ const ResetPassword = () => {
 
               {error && (
                 <p className="my-5 font-semibold text-red-600">{error}</p>
+              )}
+
+              {message && (
+                <p className="my-5 font-semibold text-red-600">{message}</p>
               )}
 
               <button className="w-full mt-10 bg-blue-800 text-center text-lg text-white font-[Poppins] font-semibold  py-3 rounded-lg cursor-pointer border-[1px] border-[#1E2772] hover:bg-blue-600">

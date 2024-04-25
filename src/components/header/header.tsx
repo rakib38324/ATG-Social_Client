@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { handleLogout } from "../common/token/auth";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 type AccessToken = string | null; // Define type for accessToken
 
 const Header = () => {
   const [data, setData] = useState<AccessToken>("");
+  const router = useRouter();
 
   useEffect(() => {
     const accessToken: AccessToken = localStorage.getItem("accessToken");
@@ -19,7 +21,28 @@ const Header = () => {
   return (
     <div className="max-w-7xl mx-auto  navbar bg-blue-100 rounded">
       <div className="flex-1">
-        <a className="btn btn-ghost text-2xl font-bold">ATG Social</a>
+        <a
+          onClick={() => router.push("/")}
+          className="btn btn-ghost text-2xl font-bold"
+        >
+          ATG Social
+        </a>
+        {data && (
+          <div className="flex gap-4 md:gap-6 text-sm md:text-lg font-semibold my-auto mx-auto">
+            <p
+              onClick={() => router.push("/")}
+              className="uppercase cursor-pointer hover:bg-blue-200 md:px-4 py-2 rounded-md"
+            >
+              Home
+            </p>
+            <p
+              onClick={() => router.push("/add-post")}
+              className="uppercase cursor-pointer hover:bg-blue-200 md:px-4 py-2 rounded-md"
+            >
+              Add Post
+            </p>
+          </div>
+        )}
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">

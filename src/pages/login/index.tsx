@@ -44,6 +44,7 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(FormData),
+        credentials: "include",
       })
         .then((res) => res.json())
         .then((res) => {
@@ -78,7 +79,7 @@ const Login = () => {
       {loading && <Loading />}
       <section className=" grid lg:grid-cols-2 light:border-[1px] border-blue-600">
         <div className="py-20 bg-blue-50">
-          {/* <Image className='w-1/3 md:w-1/4' src={logoBlue} alt='Softex Solution Logo' /> */}
+        
           <div className="lg:w-2/3 mx-auto p-4">
             <p className="text-center text-2xl lg:text-3xl text-[#555] font-semibold font-[Poppins] mb-10 underline">
               Login Your Account

@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiTwotoneLike } from "react-icons/ai";
-import { FaComment, FaTrashAlt, FaUserCircle } from "react-icons/fa";
+import { FaComment, FaEdit, FaTrashAlt, FaUserCircle } from "react-icons/fa";
 
 const SinglePost = () => {
   const [userId, setUserId] = useState<UserId>("");
@@ -59,6 +59,16 @@ const SinglePost = () => {
       return data;
     },
   });
+
+  useEffect(() => {
+    if (postId && !singlePost) {
+      oneRefetch();
+    }
+
+    if(!singlePost){
+      
+    }
+  }, [postId, oneRefetch, singlePost]);
 
   const { data: comments = [], refetch: commentRefetch } = useQuery({
     queryKey: ["comments"],
@@ -157,10 +167,11 @@ const SinglePost = () => {
       });
     }
   };
-  console.log(comments);
+  // console.log(post);
   return (
     <Layout pageTitle={"ATG | Single Post"}>
       {oneRefetching && <Loading />}
+      <p className="text-center my-5 p-2 bg-red-100 font-semibold">If you want to Edit and Delete Post you need to create a post. Because Only Post Author have access to EDIT and DELETE. Thank You.</p>
       <section className="grid md:grid-cols-3">
         <div className="p-2">
           <p className="text-center text-2xl m-4 font-bold">Post Details</p>
@@ -185,21 +196,29 @@ const SinglePost = () => {
                   </p>
                 </div>
 
-                <p
-                  onClick={() => {
-                    postId &&  setPostDeleteId(postId);
-                    const modal = document.getElementById(
-                      "delete_modal"
-                    ) as HTMLDialogElement | null;
-                    if (modal) {
-                      modal.showModal();
-                    }
-                   
-                  }}
-                  className="my-auto mr-5 text-2xl text-red-600 cursor-pointer"
-                >
-                  <FaTrashAlt />
-                </p>
+                { 
+                 post?.author?._id === userId &&
+                  <div className="flex gap-4">
+                    <p onClick={() => router.push(`/edit-post?id=${post?._id}`)} className="my-auto mr-5 text-2xl text-blue-600 cursor-pointer">
+                      <FaEdit />
+                    </p>
+
+                    <p
+                      onClick={() => {
+                        postId && setPostDeleteId(postId);
+                        const modal = document.getElementById(
+                          "delete_modal"
+                        ) as HTMLDialogElement | null;
+                        if (modal) {
+                          modal.showModal();
+                        }
+                      }}
+                      className="my-auto mr-5 text-2xl text-red-600 cursor-pointer"
+                    >
+                      <FaTrashAlt />
+                    </p>
+                  </div>
+                }
               </div>
 
               <p className="mt-4 italic text-justify">
@@ -321,7 +340,7 @@ const SinglePost = () => {
                 <form method="dialog">
                   <button
                     onClick={() => {
-                        setPostDeleteId("");
+                      setPostDeleteId("");
                     }}
                     className="bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
                   >
