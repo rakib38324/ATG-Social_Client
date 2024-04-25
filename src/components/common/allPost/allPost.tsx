@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiTwotoneLike } from "react-icons/ai";
@@ -18,12 +19,14 @@ export type TPost = {
 export interface PostProps {
   posts: TPost[] | undefined;
   refetch: any;
+  singleRefetch: any;
 }
 
-type UserId = string | null;
+export type UserId = string | null;
 
-const AllPost: React.FC<PostProps> = ({ posts, refetch }) => {
+const AllPost: React.FC<PostProps> = ({ posts, refetch, singleRefetch }) => {
   const [userId, setUserId] = useState<UserId>("");
+  const router = useRouter();
 
   useEffect(() => {
     const userId = localStorage.getItem("User_Id");
@@ -85,17 +88,25 @@ const AllPost: React.FC<PostProps> = ({ posts, refetch }) => {
             />
 
             <div className="p-2">
-              <p className="text-xl font-semibold my-1">Title: {p?.title}</p>
-              <p className="text-xl font-semibold my-1">
+              <p className="text-lg font-semibold my-1">Title: {p?.title}</p>
+              <p className="text-lg font-semibold my-1">
                 Author: {p?.author?.username}
               </p>
-              <p className="mt-4 italic text-justify">{p?.description}</p>
+              <p className="mt-4 italic text-justify">
+                {p?.description?.slice(0, 40) + "..."}
+              </p>
+              <p
+                onClick={() => router.push(`/single-post?id=${p?._id}`)}
+                className="my-2 font-semibold text-end cursor-pointer underline"
+              >
+                Ream more
+              </p>
             </div>
 
             <div className="flex justify-around my-5 py-2 bg-gray-100 border-y">
               <p
                 onClick={() => {
-                  userId && p?.InteractedPeopleId.includes(userId)
+                  userId && p?.InteractedPeopleId?.includes(userId)
                     ? handleLikePodcast(p?._id, "unlike")
                     : handleLikePodcast(p?._id, "like");
                 }}
@@ -110,7 +121,10 @@ const AllPost: React.FC<PostProps> = ({ posts, refetch }) => {
                 {p?.actions}
               </p>
               <p
-                // onClick={() => setCommentDrawer(!commentDrawer)}
+                onClick={() => {
+                  router.push(`/single-post?id=${p?._id}`);
+                  singleRefetch();
+                }}
                 className="cursor-pointer flex gap-2 font-semibold  "
               >
                 <FaComment className="my-auto text-xl" /> Comment

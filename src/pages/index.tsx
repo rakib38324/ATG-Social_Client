@@ -9,17 +9,7 @@ import { useEffect, useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  // const [posts, setPosts] = useState<TPost[]>([]);
-
-  // useEffect(() => {
-  //   fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/POST`, {
-  //     headers: {
-  //       authorization: `${localStorage.getItem("accessToken")}`,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => setPosts(data.data));
-  // }, []);
+ 
 
   const {
     data: posts = [],
@@ -46,7 +36,7 @@ export default function Home() {
           isLoading && <Loading />
         }
         <section>
-          <AllPost posts={posts.data} refetch={refetch} />
+          <AllPost posts={posts.data} refetch={refetch} singleRefetch={refetch}/>
         </section>
       </Layout>
     </section>
